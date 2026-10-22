@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Miner Clicker</title>
+    <style>
+        /* CSS STYLING OVERRIDES AND LAYOUT */
+        body {
+            background-color: #060913;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .game-layout {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* Left Panel Style */
+        .clicker-panel {
+            flex: 1.2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle, #0f172a 0%, #020617 100%);
+            border-right: 3px solid #1e293b;
+            padding: 20px;
+        }
+
+        h1 {
+            margin: 0 0 10px 0;
+            color: #38bdf8;
+            text-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+            font-size: 2.5rem;
+        }
+
+        .score-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid #38bdf8;
+            border-radius: 16px;
+            padding: 15px 40px;
+            text-align: center;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 40px;
+        }
+
+        .score-card h2 {
+            font-size: 2rem;
+            color: #f59e0b;
+            margin: 0 0 5px 0;
+        }
+
+        .score-card p {
+            margin: 2px 0;
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
+
+        /* Meteor Button Animation */
+        .meteor-container {
+            position: relative;
+        }
+
+        #clicker-btn {
+            background: radial-gradient(circle, #f43f5e 0%, #be123c 100%);
+            font-size: 5rem;
+            border: 6px solid #fda4af;
+            border-radius: 50%;
+            width: 220px;
+            height: 220px;
+            cursor: pointer;
+            box-shadow: 0 0 40px rgba(244, 63, 94, 0.5);
+            outline: none;
+            transition: transform 0.05s ease;
+        }
+
+        #clicker-btn:hover {
+            transform: scale(1.03);
+            filter: brightness(1.1);
+        }
+
+        #clicker-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Right Shop Panel Style */
+        .shop-panel {
+            flex: 0.8;
+            background-color: #0f172a;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            overflow-y: auto;
+        }
+
+        .shop-panel h2 {
+            color: #e2e8f0;
+            border-bottom: 2px solid #334155;
+            padding-bottom: 10px;
+            margin: 0 0 10px 0;
+        }
+
+        .shop-item {
+            background: #1e293b;
+            border: 1px solid #475569;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            cursor: pointer;
+            text-align: left;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .shop-item:hover {
+            background: #334155;
+            border-color: #38bdf8;
+        }
+
+        .shop-item:active {
+            transform: scale(0.98);
+        }
+
+        .item-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .item-name {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #f8fafc;
+        }
+
+        .item-desc {
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
+
+        .item-cost {
+            font-weight: bold;
+            color: #f59e0b;
+            background: rgba(245, 158, 11, 0.1);
+            padding: 6px 12px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-layout">
+        <!-- Left Side: Main Tapping Area -->
+        <div class="clicker-panel">
+            <h1>Space Miner Clicker</h1>
+            
+            <div class="score-card">
+                <h2>💰 <span id="score-display">0</span> Credits</h2>
+                <p>per second (CPS): <span id="cps-display">0</span></p>
+                <p>per click (CPC): <span id="cpc-display">1</span></p>
+            </div>
+
+            <div class="meteor-container">
+                <button id="clicker-btn">☄️</button>
+            </div>
+        </div>
+
+        <!-- Right Side: Upgrade Shop -->
+        <div class="shop-panel">
+            <h2>🛸 Galactic Shop</h2>
+            
+            <!-- Upgrade 1: Manual Click Power -->
+            <button id="buy-cpc-btn" class="shop-item">
+                <div class="item-info">
+                    <span class="item-name">⚡ Plasma Drill</span>
+                    <span class="item-desc">+1 Credit per click</span>
+                </div>
+                <span class="item-cost"><span id="cpc-cost">15</span> Credits</span>
+            </button>
+
+            <!-- Upgrade 2: Automated Idle Worker -->
+            <button id="buy-miner-btn" class="shop-item">
+                <div class="item-info">
+                    <span class="item-name">🤖 Mining Drone</span>
+                    <span class="item-desc">+1 Credit per second</span>
+                </div>
+                <span class="item-cost"><span id="miner-cost">50</span> Credits</span>
+            </button>
+
+            <!-- Upgrade 3: Advanced Idle Station -->
+            <button id="buy-station-btn" class="shop-item">
+                <div class="item-info">
+                    <span class="item-name">🛰️ Star Station</span>
+                    <span class="item-desc">+8 Credits per second</span>
+                </div>
+                <span class="item-cost"><span id="station-cost">400</span> Credits</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // JAVASCRIPT GAME CONTROL ENGINE LOGIC
+        let score = 0;
+        let clickValue = 1;
+        let gpsValue = 0;
+
+        let cpcCost = 15;
+        let minerCost = 50;
+        let stationCost = 400;
+
+        const scoreDisplay = document.getElementById("score-display");
+        const cpsDisplay = document.getElementById("cps-display");
+        const cpcDisplay = document.getElementById("cpc-display");
+
+        const cpcCostDisplay = document.getElementById("cpc-cost");
+        const minerCostDisplay = document.getElementById("miner-cost");
+        const stationCostDisplay = document.getElementById("station-cost");
+
+        const clickBtn = document.getElementById("clicker-btn");
+        const buyCpcBtn = document.getElementById("buy-cpc-btn");
+        const buyMinerBtn = document.getElementById("buy-miner-btn");
+        const buyStationBtn = document.getElementById("buy-station-btn");
+
+        function updateUI() {
+            scoreDisplay.innerText = Math.floor(score);
+            cpsDisplay.innerText = gpsValue;
+            cpcDisplay.innerText = clickValue;
+
+            cpcCostDisplay.innerText = cpcCost;
+            minerCostDisplay.innerText = minerCost;
+            stationCostDisplay.innerText = stationCost;
+        }
+
+        // Tap action
+        clickBtn.addEventListener("click", () => {
+            score += clickValue;
+            updateUI();
+        });
+
+        // Upgrades actions
+        buyCpcBtn.addEventListener("click", () => {
+            if (score >= cpcCost) {
+                score -= cpcCost;
+                clickValue += 1;
+                cpcCost = Math.floor(cpcCost * 1.5);
+                updateUI();
+            } else {
+                alert("Not enough cosmic credits!");
+            }
+        });
+
+        buyMinerBtn.addEventListener("click", () => {
+            if (score >= minerCost) {
+                score -= minerCost;
+                gpsValue += 1;
+                minerCost = Math.floor(minerCost * 1.5);
+                updateUI();
+            } else {
+                alert("Not enough cosmic credits!");
+            }
+        });
+
+        buyStationBtn.addEventListener("click", () => {
+            if (score >= stationCost) {
+                score -= stationCost;
+                gpsValue += 8;
+                stationCost = Math.floor(stationCost * 1.6);
+                updateUI();
+            } else {
+                alert("Not enough cosmic credits!");
+            }
+        });
+
+        // Automated continuous loops tracking CPS
+        setInterval(() => {
+            if (gpsValue > 0) {
+                score += (gpsValue / 10);
+                updateUI();
+            }
+        }, 100);
+    </script>
+</body>
+</html>

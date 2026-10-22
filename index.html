@@ -1,0 +1,102 @@
+<link rel="manifest" href="manifest.json">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Celestial Empire</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+
+    <div id="ui-container">
+      <div class="interactive-viewport" id="clickArea">
+        <canvas id="gameCanvas"></canvas>
+        <div id="saveNotice">Sector State Saved</div>
+        <div id="eventNotice" class="event-banner hidden">SOLAR STORM ACTIVE (3x Yield)</div>
+        <div id="achievementNotice" class="achievement-banner hidden">🏆 ACHIEVEMENT UNLOCKED!</div>
+
+        <div class="planet-bar">
+          <button class="planet-btn active" data-planet="moon">🌕 Moon (1x)</button>
+          <button class="planet-btn locked" data-planet="mercury" id="tabMercury">☿️ Mercury (1.8x)</button>
+          <button class="planet-btn locked" data-planet="venus" id="tabVenus">♀️ Venus (2.2x)</button>
+          <button class="planet-btn locked" data-planet="mars" id="tabMars">🔴 Mars (3.0x)</button>
+          <button class="planet-btn locked" data-planet="jupiter" id="tabJupiter">🪐 Jupiter (6.0x)</button>
+          <button class="planet-btn locked" data-planet="saturn" id="tabSaturn">🪐 Saturn (10x)</button>
+          <button class="planet-btn locked" data-planet="uranus" id="tabUranus">🌌 Uranus (18x)</button>
+          <button class="planet-btn locked" data-planet="neptune" id="tabNeptune">🔵 Neptune (30x)</button>
+          <button class="planet-btn locked" data-planet="station" id="tabStation">🌌 Station (50x)</button>
+          <button class="planet-btn" id="pauseGameBtn">⏸️ Pause</button>
+        </div>
+
+        <div class="score-hud">
+          <div id="bossHud" class="shield-widget hidden" style="margin-bottom: 10px;">
+            <div class="shield-label" style="color: #ff0055;">⚠️ BOSS DETECTED: <span id="bossNameText">TITAN LEVIATHAN</span></div>
+            <div class="shield-bar-bg" style="border-color: #ff0055; width: 280px; height: 10px;">
+              <div class="shield-bar-fill" id="bossHealthBarFill" style="background: linear-gradient(90deg, #ff0055, #ff55aa); width: 100%;"></div>
+            </div>
+          </div>
+
+          <div class="shield-widget">
+            <div class="shield-label">Base Shield: <span id="shieldText">100%</span></div>
+            <div class="shield-bar-bg"><div class="shield-bar-fill" id="shieldBarFill"></div></div>
+          </div>
+
+          <div class="score-number" id="pointsDisplay">0</div>
+          <div class="cps-text" id="cpsDisplay">0 per second</div>
+          <div class="relic-hud-text">Dark Matter: <span id="darkMatterDisplay">0</span> DM</div>
+        </div>
+
+        <div id="devPanel" class="dev-panel hidden">
+          <div class="dev-header">
+            <span>🛠️ DEV DEBUG CONSOLE</span>
+            <span style="cursor: pointer;" id="closeDevBtn">✖</span>
+          </div>
+          <div class="dev-grid">
+            <button class="dev-cheat-btn" id="devAdd10k">+10K Points</button>
+            <button class="dev-cheat-btn" id="devAdd1M">+1M Points</button>
+            <button class="dev-cheat-btn" id="devMaxLaser">Max Laser Power</button>
+            <button class="dev-cheat-btn" id="devUnlockSectors">Unlock All Sectors</button>
+            <button class="dev-cheat-btn" id="devGodMode">God Mode Shield</button>
+            <button class="dev-cheat-btn" id="devAddMechs">+10 Titan Mechs</button>
+            <button class="dev-cheat-btn" id="devSpeedToggle">Speed: 1x</button>
+            <button class="dev-cheat-btn" id="devInfPoints">Inf Points: OFF</button>
+          </div>
+        </div>
+
+        <div class="bottom-hud">
+          <div class="ability-bar">
+            <button class="ability-btn" id="abilityOvercharge">⚡ OVERCHARGE (60s)</button>
+            <button class="ability-btn" id="abilityShieldBoost">🛡️ SUPERCHARGE (60s)</button>
+          </div>
+          <div class="stats-grid">
+            <div>Click Power: <span id="clickPowerDisplay">1</span></div>
+            <div>Defenders: <span id="turretCountDisplay">0</span></div>
+            <div>Titan Mechs: <span id="mechCountDisplay">0</span></div>
+            <div>Global Yield: <span id="multDisplay">1</span>x</div>
+          </div>
+          <button class="dev-toggle-btn" id="devToggleBtn">🛠️ DEV MENU</button>
+        </div>
+      </div>
+
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <span class="sidebar-title">COMMAND CENTER</span>
+          <div class="btn-group">
+            <button class="action-btn" id="manualSaveBtn">💾 Save</button>
+            <button class="action-btn reset-btn" id="manualResetBtn">Reset</button>
+          </div>
+        </div>
+
+        <div class="upgrades-list" id="upgradesList"></div>
+
+        <button class="prestige-btn" id="prestigeBtn">
+          PRESTIGE ENGINE (100,000 Pts)
+          <br><small style="font-weight: normal; opacity: 0.8;">Reset for +1 Dark Matter Perk Point</small>
+        </button>
+      </div>
+    </div>
+
+    <script src="Javascript.js"></script>
+  </body>
+</html>
